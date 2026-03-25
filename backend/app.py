@@ -43,7 +43,7 @@ SERVICES = {
     'tennis_bot': {
         'name': 'Tennis Booking Bot',
         'check_type': 'process',
-        'process_name': 'python3'
+        'process_name': 'telegram_bot'
     },
     'voice_assistant': {
         'name': 'Voice Assistant',
@@ -184,8 +184,9 @@ def check_service_health(service):
             # Check if process is running
             process_name = service.get('process_name')
             try:
-                for proc in psutil.process_iter(['name']):
-                    if process_name.lower() in proc.info['name'].lower():
+                for proc in psutil.process_iter(['pid', 'cmdline']):
+                    cmdline = ' '.join(proc.info.get('cmdline', []))
+                    if process_name.lower() in cmdline.lower():
                         status = 'running'
                         details['pid'] = proc.info['pid']
                         break
