@@ -6,13 +6,17 @@ Flask application providing system metrics and service health checks
 
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
-import json
+import os
 import psutil
 import subprocess
 import time
 from datetime import datetime
 
-app = Flask(__name__)
+# Set the correct path for static files
+template_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend')
+
+app = Flask(__name__, static_folder=static_dir, template_folder=template_dir)
 CORS(app)
 
 # System thresholds for alerts
@@ -263,7 +267,7 @@ def check_thresholds(metrics):
 @app.route('/')
 def index():
     """Serve the dashboard frontend"""
-    return send_from_directory('../frontend', 'index.html')
+    return app.send_static_file('index.html')
 
 
 @app.route('/api/metrics')
