@@ -36,9 +36,8 @@ SERVICES = {
     },
     'openclaw': {
         'name': 'OpenClaw Gateway',
-        'check_type': 'tcp',
-        'host': 'localhost',
-        'port': 18789
+        'check_type': 'process',
+        'process_name': 'openclaw-gateway'
     },
     'tennis_bot': {
         'name': 'Tennis Booking Bot',
