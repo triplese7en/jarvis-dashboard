@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis Health Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0e27">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1 class="dashboard-title">JARVIS</h1>
+                <span class="dashboard-subtitle">Health Dashboard</span>
+            </div>
+            <div class="header-right">
+                <div class="last-updated" id="lastUpdated">Updating...</div>
+                <button class="refresh-btn" id="refreshBtn" title="Refresh Now">
+                    ↻
+                </button>
+            </div>
+        </header>
+
+        <!-- Alerts Section -->
+        <div class="alerts-section" id="alertsSection" style="display: none;">
+            <div class="alerts-title">⚠️ Alerts</div>
+            <div class="alerts-list" id="alertsList"></div>
+        </div>
+
+        <!-- Main Metrics Grid -->
+        <div class="metrics-grid">
+            <!-- CPU Card -->
+            <div class="metric-card cpu-card">
+                <div class="card-header">
+                    <span class="card-icon">⚙️</span>
+                    <span class="card-title">CPU</span>
+                </div>
+                <div class="metric-value" id="cpuValue">--%</div>
+                <div class="metric-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Cores:</span>
+                        <span class="detail-value" id="cpuCores">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Freq:</span>
+                        <span class="detail-value" id="cpuFreq">--</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="cpuProgress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Memory Card -->
+            <div class="metric-card memory-card">
+                <div class="card-header">
+                    <span class="card-icon">💾</span>
+                    <span class="card-title">Memory</span>
+                </div>
+                <div class="metric-value" id="memoryValue">--%</div>
+                <div class="metric-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Used:</span>
+                        <span class="detail-value" id="memoryUsed">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Swap:</span>
+                        <span class="detail-value" id="memorySwap">--</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="memoryProgress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Disk Card -->
+            <div class="metric-card disk-card">
+                <div class="card-header">
+                    <span class="card-icon">💿</span>
+                    <span class="card-title">Disk</span>
+                </div>
+                <div class="metric-value" id="diskValue">--%</div>
+                <div class="metric-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Free:</span>
+                        <span class="detail-value" id="diskFree">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Used:</span>
+                        <span class="detail-value" id="diskUsed">--</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="diskProgress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Temperature Card -->
+            <div class="metric-card temp-card">
+                <div class="card-header">
+                    <span class="card-icon">🌡️</span>
+                    <span class="card-title">Temperature</span>
+                </div>
+                <div class="metric-value" id="tempValue">--°C</div>
+                <div class="metric-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value" id="tempStatus">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Card -->
+            <div class="metric-card network-card">
+                <div class="card-header">
+                    <span class="card-icon">🌐</span>
+                    <span class="card-title">Network</span>
+                </div>
+                <div class="metric-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Sent:</span>
+                        <span class="detail-value" id="networkSent">--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Recv:</span>
+                        <span class="detail-value" id="networkRecv">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Uptime Card -->
+            <div class="metric-card uptime-card">
+                <div class="card-header">
+                    <span class="card-icon">⏱️</span>
+                    <span class="card-title">Uptime</span>
+                </div>
+                <div class="metric-value" id="uptimeValue">--</div>
+                <div class="metric-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Boot:</span>
+                        <span class="detail-value" id="bootTime">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <div class="services-section">
+            <div class="section-title">Services</div>
+            <div class="services-grid" id="servicesGrid">
+                <!-- Services will be populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="footer-info">Raspberry Pi 5 • Jarvis</div>
+            <div class="footer-version" id="apiVersion">v1.0.0</div>
+        </footer>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+    <script src="js/polling.js"></script>
+</body>
+</html>
