@@ -75,11 +75,17 @@ def get_system_metrics():
         temp = None
         try:
             temps = psutil.sensors_temperatures()
-            if temps and 'cpu-thermal' in temps:
+            # Try different sensor names (varies by system)
+            if temps and 'cpu_thermal' in temps:
+                temp = temps['cpu_thermal'][0].current
+            elif temps and 'cpu-thermal' in temps:
                 temp = temps['cpu-thermal'][0].current
             elif temps and 'coretemp' in temps:
                 temp = temps['coretemp'][0].current
-        except Exception:
+            elif temps and 'cpu_thermal' in temps:
+                temp = temps['cpu_thermal'][0].current
+        except Exception as e:
+            app.logger.debug(f"Temperature sensor error: {e}")
             pass
 
         # Uptime
