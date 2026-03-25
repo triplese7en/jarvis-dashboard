@@ -13,10 +13,10 @@ import time
 from datetime import datetime
 
 # Set the correct path for static files
-template_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend')
+app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+frontend_dir = os.path.join(app_dir, 'frontend')
 
-app = Flask(__name__, static_folder=static_dir, template_folder=template_dir)
+app = Flask(__name__, static_folder=frontend_dir, static_url_path='', template_folder=frontend_dir)
 CORS(app)
 
 # System thresholds for alerts
